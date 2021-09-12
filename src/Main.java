@@ -1,42 +1,422 @@
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Random;
 
 public class Main {
 
-    public static void  main(String[] args) {
-        System.out.println ("\nДобро пожаловать в игру путешествие торговца" );
 
-        Torgovec torgovec = new Torgovec ();
-        Random random = new Random (  );
-        torgovec.setGruzCarrying ((int) (500+Math.random ()*1000));
-        System.out.println ("\nГрузоподъемность телеги торговца  "  +torgovec.getGruzCarrying ()+  "  киллограмм." );
-        torgovec.setMoney ((int) (5000+Math.random ()*10000));
-        System.out.println ("\nКоличество денег  "+torgovec.getMoney ()+"  золотых монет." );
-        torgovec.setSpeed ((int) (1+Math.random ()*4));
-        System.out.println ("\nСкорость передвижения торговца = "+torgovec.getSpeed ()+"  лиг в день." );
+    public static void main(String[] args) {
+        State state = new State ( );
+        Double[] coef1 = {1.2, 0.95, 0.55, 0.25, 0.1};
+
+        System.out.println ("\nДобро пожаловать в игру путешествие торговца");
+
+        Tovar meat1 = new Tovar ( );
+        Tovar corn1 = new Tovar ( );
+        Tovar driedFructs1 = new Tovar ( );
+        Tovar flour1 = new Tovar ( );
+        Tovar fabricks1 = new Tovar ( );
+        corn1.setPrice ( );
+        meat1.setPrice ( );
+        driedFructs1.setPrice ( );
+        flour1.setPrice ( );
+        fabricks1.setPrice ( );
+
+
+        corn1.setCoef (coef1[0]);
+        meat1.setCoef (coef1[0]);
+        driedFructs1.setCoef (coef1[0]);
+        flour1.setCoef (coef1[0]);
+        fabricks1.setCoef (coef1[0]);
+
+
+        System.out.println ("\nПрежде чем двинуться в путь надо закупить товаров для торговли");
+
+        System.out.println ("\nМясо нынче стоит " + meat1.getPrice ( ) + "\nМука нынче стоит " + fabricks1.getPrice ( ) + "\nСухофрукты нынче стоят " + driedFructs1.getPrice ( ) +
+                "\nКраска нынче стоит " + flour1.getPrice ( ) + "\nЗерно нынче стоит " + corn1.getPrice ( ));
+
+        Torgovec torgovec = new Torgovec ( );
+        Random random = new Random ( );
+        torgovec.setGruzCarrying ((int) (500 + Math.random ( ) * 1000));
+        System.out.println ("\nГрузоподъемность телеги торговца  " + torgovec.getGruzCarrying ( ) + "  киллограмм.");
+
+        torgovec.setMoney ((double) (5000 + Math.random ( ) * 500000));
+        System.out.println ("\nКоличество денег  " + torgovec.getMoney ( ) + "  золотых монет.");
+
+        int corn = 0, driedFructs = 0, fabricks = 0, flour = 0, meat = 0;
+        int cornCena = 0, driedFructsCena = 0, fabricksCena = 0, flourCena = 0, meatCena = 0, summa = 0, ves = 0;
+
+        for (int i = 0; i < (torgovec.getGruzCarrying ( )); i++) {
+
+            int kilogram = changeTovar ();
+
+            if (summa < torgovec.getMoney ( ) - 200) {
+                if (kilogram == 0) {
+                    corn = 1 + corn;
+                    cornCena = corn * corn1.getPrice ( );
+                } else if (kilogram == 1) {
+                    driedFructs = driedFructs + 1;
+                    driedFructsCena = driedFructs * driedFructs1.getPrice ( );
+                } else if (kilogram == 2) {
+                    fabricks = fabricks + 1;
+                    fabricksCena = fabricks * fabricks1.getPrice ( );
+                } else if (kilogram == 3) {
+                    flour = flour + 1;
+                    flourCena = flour * flour1.getPrice ( );
+                } else {
+                    meat = meat + 1;
+                    meatCena = meat * meat1.getPrice ( );
+                }
+                ves = corn + driedFructs + fabricks + flour + meat;
+                summa = driedFructsCena + fabricksCena + flourCena + meatCena + cornCena;
+            }
+            corn1.setWeight (corn);
+            driedFructs1.setWeight (driedFructs);
+            fabricks1.setWeight (fabricks);
+            flour1.setWeight (flour);
+            meat1.setWeight (meat);
+
+        }
+        System.out.println ("\nЗерна куплено " + corn + " килограм| Сухофрукты куплено " + driedFructs + " килограм| Муки куплено "
+                + fabricks + " килограм|\nКраски куплено " + flour + " килограм| Мяса куплено " + meat + " килограм");
+        torgovec.setMoney (torgovec.getMoney ( ) - summa);
+        System.out.println ("Товаров куплено на сумму " + summa + " золотых \nОставшиеся золотые " + torgovec.getMoney ( ) + "\nОбщий вес груза " + ves + " килограм");
+
+        torgovec.setSpeed ((int) (1 + Math.random ( ) * 4));
+        System.out.println ("\nСкорость передвижения торговца = " + torgovec.getSpeed ( ) + "  лиг в день.");
+
         String[] town = {"Бишкек", "Астана", "Стамбул", "Москва", "Ташкент"};
-        System.out.println ("\nЕсть пять торговых городов в которые может пойти торговец. Это  "+ Arrays.toString (town)+"  . Какой же выберет торговец ?" );
+        System.out.println ("\nЕсть пять торговых городов в которые может пойти торговец. Это  " + Arrays.toString (town) + ". Какой же выберет торговец ?");
+        int randomTown = random.nextInt (town.length);
+        System.out.println ("");
+        System.out.println ("Торговец выбрал город " + town[randomTown]);
 
-        int randomTown = random.nextInt ( town.length);
-        System.out.println ("" );
-        System.out.println ("Торговец выбрал город "+town[randomTown] );
+        int randomDistance = (int) (50 + Math.random ( ) * 50);
+        System.out.println ("\nДо города " + town[randomTown] + " " + randomDistance + " лиг пути.");
 
-        int randomDistance = (int) (50+Math.random ()*50);
-
-        System.out.println ("\nДо города "+town[randomTown]+" "+randomDistance+" лиг пути." );
-
-        double durationTravel = randomDistance/torgovec.getSpeed ();
-
-        System.out.println ("\nЕсли судить по звдездам то путь продлится "+durationTravel+" дней и ночей." );
+        double durationTravel = randomDistance / torgovec.getSpeed ( );
+        System.out.println ("\nЕсли судить по звездам то путь продлится " + durationTravel + " дней и ночей.");
 
 
+        if (state.getStateChange ( ) == 0) {
+            System.out.println ("Обычный день, ничего не произошло");
+
+        } else if (state.getStateChange ( ) == 1) {
+            System.out.println ("\nПошел дождь, тележка потеряла ход");
+
+            torgovec.setSpeed (torgovec.getSpeed ( ) - 2);
+            System.out.println ("\nСкорость торговца уменьшилась до " + torgovec.getSpeed ( ) + " лиг.");
+
+            if (new java.util.Random ( ).nextInt (1) == 0) {
+                String[] tovarSpisok = {"Corn", "DriedFructs", "Fabricks", "Flour", "Meat"};
+                int changeBadProduct = random.nextInt (tovarSpisok.length);
+
+                if (summa < torgovec.getMoney ( ) - 200) {
+                    if (changeBadProduct == 0) {
+                        Double indexU = Double.valueOf (indexOf (corn1.getCoef ( ), coef1) + 1);
+                        corn1.setCoef (indexU);
+                        System.out.println ("Зерно намокло");
+
+                    } else if (changeBadProduct == 1) {
+                        Double indexU = Double.valueOf (indexOf (driedFructs1.getCoef ( ), coef1) + 1);
+                        driedFructs1.setCoef (indexU);
+                        System.out.println ("Сухофрукты намокли");
+                    } else if (changeBadProduct == 2) {
+                        Double indexU = Double.valueOf (indexOf (fabricks1.getCoef ( ), coef1) + 1);
+                        fabricks1.setCoef (indexU);
+                        System.out.println ("Ткани намокли");
+                    } else if (changeBadProduct == 3) {
+                        Double indexU = Double.valueOf (indexOf (flour1.getCoef ( ), coef1) + 1);
+                        flour1.setCoef (indexU);
+                        System.out.println ("Краска намокла");
+                    } else {
+                        Double indexU = Double.valueOf (indexOf (meat1.getCoef ( ), coef1) + 1);
+                        meat1.setCoef (indexU);
+                        System.out.println ("Мясо намокло");
+                    }
+                    System.out.println ("Вода попала на товар. Состояние товара ухудшилось");
+                }
+            }
+        } else if (state.getStateChange ( ) == 2) {
+            System.out.println ("\nДорога настоль ровная что тянет ко сну");
+            torgovec.setSpeed (torgovec.getSpeed ( ) + 2);
+            System.out.println ("Скорость увелечилась");
+            durationTravel = randomDistance/torgovec.getSpeed ();
+            System.out.println ("Теперь мы доедем быстрее. Продолжительность пути сократилось до "+durationTravel+" дней" );
+
+        } else if (state.getStateChange ( ) == 3) {
+            System.out.println ("Сломалось колесо... День впустую стоим на месте");
+            durationTravel = durationTravel+1;
+
+        } else if (state.getStateChange ( ) == 4) {
+            System.out.println ("Большая река встретилась на пути. Целый день ушел на поиски брода");
+            durationTravel = durationTravel + 1;
+        } else if (state.getStateChange ( ) == 5) {
+            System.out.println ("Встретил местного, знающего человека. Узнал как можно срезать путь");
+            int srezPuti = (int) (3 + Math.random ( ) * 3);
+            randomDistance = randomDistance - srezPuti;
+            System.out.println ("Теперь расстояние до города стало "+randomDistance+" лиг" );
+        } else if (state.getStateChange ( ) == 6) {
+            System.out.println ("Внезапно появились разбойники....");
+            int otkup = (int) (1 + Math.random ( ) * 1);
+            if (otkup == 1) {
+                System.out.println ("Разбойник забирает все оставшиеся деньги");
+                torgovec.setMoney (0.0);
+            } else {
+                System.out.println ("Разбойники забирают лучший товар");
+                if (corn1.getPrice ( ) > driedFructs1.getPrice ( )) {
+                    if (corn1.getPrice ( ) > fabricks1.getPrice ( )) {
+                        if (corn1.getPrice ( ) > flour1.getPrice ( )) {
+                            if (corn1.getPrice ( ) > meat1.getPrice ( )) {
+                                System.out.println ("Разбойники забрали все зерно");
+                                corn1.setWeight (0);
+                            }
+                        }
+                    }
+                } else if (driedFructs1.getPrice ( ) > fabricks1.getPrice ( )) {
+                    if (driedFructs1.getPrice ( ) > flour1.getPrice ( )) {
+                        if (driedFructs1.getPrice ( ) > meat1.getPrice ( )) {
+                            System.out.println ("Разбойники забрали все сухофрукты");
+                            driedFructs1.setWeight (0);
+                        }
+                    }
+                } else if (fabricks1.getPrice ( ) > flour1.getPrice ( )) {
+                    if (fabricks1.getPrice ( ) > meat1.getPrice ( )) {
+                        System.out.println ("Разбойники забрали всю ткань");
+                        fabricks1.setWeight (0);
+                    }
+                } else if (flour1.getPrice ( ) > meat1.getPrice ( )) {
+                    System.out.println ("Разбойники забрали всю краску");
+                    flour1.setWeight (0);
+                } else {
+                    System.out.println ("Разбойники забрали все мясо");
+                    meat1.setWeight (0);
+
+                }
+
+            }
+        } else if (state.getStateChange ( ) == 7) {
+            System.out.println ("Довольно приличный трактир, где можно отдохнуть а может даже и совершить выгодную сделку");
+            System.out.println ("Ночлег здесь стоит 50 золотых включая, знатный ужин");
+            torgovec.setMoney (torgovec.getMoney ( ) - 50);
+            int sellBay = (int) (1+Math.random ( ) * 2);
 
 
+            if (sellBay == 1){
+            if(ves== (torgovec.getGruzCarrying ( ))){
+                System.out.println ("Поступило выгодное предложение. Но некуда грузить, телега перегружена. В другой раз......" );
+            }else if(torgovec.getMoney ()<200){
+                System.out.println ("Поступило выгодное предложение. Но осталось мало денег. В другой раз...." );
+            }
+
+
+            else {
+                System.out.println ("Поступило выгодное предложение. Торговец решил закупить товар");
+
+
+                int kilogram = changeTovar ( );
+
+
+                if (kilogram == 0) {
+                    System.out.println ("Покупаем зерно.");
+                    int kolichestvoBay = torgovec.getGruzCarrying ( )-ves;
+                    int kolichestvoZolota = kolichestvoBay*corn1.getPrice ();
+                    if(kolichestvoZolota>torgovec.getMoney ()){
+                        System.out.println ("Денег осталось мало, потому мы закупим товар на оставшуюся сумму" );
+                        double tovarZaOstatok = torgovec.getMoney ()/corn1.getPrice ();
+                        double kolichestvoZolota1 = tovarZaOstatok*corn1.getPrice ();
+                        System.out.println ("Зерна куплено " + tovarZaOstatok + " на cумму " + kolichestvoZolota1 + " золотых");
+                        torgovec.setMoney (torgovec.getMoney ( ) - kolichestvoZolota1);
+                        corn1.setWeight (tovarZaOstatok+corn1.getWeight ());
+                        System.out.println ("Золота осталось "+torgovec.getMoney ()+" золотых. Количество зерна стало "+corn1.getWeight ()+" килограмм" );
+                    }
+                    else {
+
+                    System.out.println ("Зерна куплено " + kolichestvoBay + " на cумму " + kolichestvoZolota + " золотых");
+
+                    torgovec.setMoney (torgovec.getMoney ( ) - kolichestvoZolota);
+                    corn1.setWeight (kolichestvoBay+corn1.getWeight ());
+                    System.out.println ("Золота осталось "+torgovec.getMoney ()+" золотых. Количество зерна стало "+corn1.getWeight ()+" килограмм" );}
+                } else if (kilogram == 1) {
+                    System.out.println ("покупаем сухофрукты.");
+                    int kolichestvoBay = torgovec.getGruzCarrying ( ) - ves;
+                    int kolichestvoZolota = kolichestvoBay * driedFructs1.getPrice ( );
+
+                    if (kolichestvoZolota > torgovec.getMoney ( )) {
+                        System.out.println ("Денег осталось мало, потому мы закупим товар на оставшуюся сумму");
+                        double tovarZaOstatok = torgovec.getMoney ( ) / driedFructs1.getPrice ( );
+                        double kolichestvoZolota1 = tovarZaOstatok * driedFructs1.getPrice ( );
+                        System.out.println ("Сухофруктов куплено " + tovarZaOstatok + " на cумму " + kolichestvoZolota1 + " золотых");
+                        torgovec.setMoney (torgovec.getMoney ( ) - kolichestvoZolota1);
+                        driedFructs1.setWeight (tovarZaOstatok + driedFructs1.getWeight ( ));
+                        System.out.println ("Золота осталось " + torgovec.getMoney ( ) + " золотых. Количество сухофруктов стало " + driedFructs1.getWeight ( ) + " килограмм");
+                    } else {
+                        System.out.println ("Сухофруктов куплено " + kolichestvoBay + " на cумму " + kolichestvoZolota + " золотых");
+
+                        torgovec.setMoney (torgovec.getMoney ( ) - kolichestvoZolota);
+                        driedFructs1.setWeight (kolichestvoBay + driedFructs1.getWeight ( ));
+                        System.out.println ("Золота осталось " + torgovec.getMoney ( ) + " золотых. Количество сухофруктов стало " + driedFructs1.getWeight ( ) + " килограмм");
+                    }
+                }else if (kilogram == 2) {
+                    System.out.println ("Покупаем муку.");
+                    int kolichestvoBay = torgovec.getGruzCarrying ( ) - ves;
+                    int kolichestvoZolota = kolichestvoBay * fabricks1.getPrice ( );
+                    if (kolichestvoZolota > torgovec.getMoney ( )) {
+                        System.out.println ("Денег осталось мало, потому мы закупим товар на оставшуюся сумму");
+                        double tovarZaOstatok = torgovec.getMoney ( ) / fabricks1.getPrice ( );
+                        double kolichestvoZolota1 = tovarZaOstatok * corn1.getPrice ( );
+                        System.out.println ("Муки куплено " + tovarZaOstatok + " на cумму " + kolichestvoZolota1 + " золотых");
+                        torgovec.setMoney (torgovec.getMoney ( ) - kolichestvoZolota1);
+                        fabricks1.setWeight (tovarZaOstatok + fabricks1.getWeight ( ));
+                        System.out.println ("Золота осталось " + torgovec.getMoney ( ) + " золотых. Количество муки стало " + fabricks1.getWeight ( ) + " килограмм");
+                    } else {
+                        System.out.println ("Муки куплено " + kolichestvoBay + " на cумму " + kolichestvoZolota + " золотых");
+
+                        torgovec.setMoney (torgovec.getMoney ( ) - kolichestvoZolota);
+                        fabricks1.setWeight (kolichestvoBay + fabricks1.getWeight ( ));
+                        System.out.println ("Золота осталось " + torgovec.getMoney ( ) + " золотых. Количество муки стало " + fabricks1.getWeight ( ) + " килограмм");
+                    }
+                }else if (kilogram == 3) {
+                    System.out.println ("Покупаем краску.");
+
+                    int kolichestvoBay = torgovec.getGruzCarrying ( ) - ves;
+                    int kolichestvoZolota = kolichestvoBay * corn1.getPrice ( );
+                    if (kolichestvoZolota > torgovec.getMoney ( )) {
+                        System.out.println ("Денег осталось мало, потому мы закупим товар на оставшуюся сумму");
+                        double tovarZaOstatok = torgovec.getMoney ( ) / flour1.getPrice ( );
+                        double kolichestvoZolota1 = tovarZaOstatok * flour1.getPrice ( );
+                        System.out.println ("Краску куплено " + tovarZaOstatok + " на cумму " + kolichestvoZolota1 + " золотых");
+                        torgovec.setMoney (torgovec.getMoney ( ) - kolichestvoZolota1);
+                        flour1.setWeight (tovarZaOstatok + flour1.getWeight ( ));
+                        System.out.println ("Золота осталось " + torgovec.getMoney ( ) + " золотых. Количество краски стало " + flour1.getWeight ( ) + " килограмм");
+                    } else {
+                        System.out.println ("Краски куплено " + kolichestvoBay + " на cумму " + kolichestvoZolota + " золотых");
+
+                        torgovec.setMoney (torgovec.getMoney ( ) - kolichestvoZolota);
+                        flour1.setWeight (kolichestvoBay + flour1.getWeight ( ));
+                        System.out.println ("Золота осталось " + torgovec.getMoney ( ) + " золотых. Количество краски стало " + flour1.getWeight ( ) + " килограмм");
+                    }
+                }else {
+                    System.out.println ("Покупаем мясо.");
+
+                    int kolichestvoBay = torgovec.getGruzCarrying ( ) - ves;
+                    int kolichestvoZolota = kolichestvoBay * meat1.getPrice ( );
+                    if (kolichestvoZolota > torgovec.getMoney ( )) {
+                        System.out.println ("Денег осталось мало, потому мы закупим товар на оставшуюся сумму");
+                        double tovarZaOstatok = torgovec.getMoney ( ) / meat1.getPrice ( );
+                        double kolichestvoZolota1 = tovarZaOstatok * meat1.getPrice ( );
+                        System.out.println ("Мяса куплено " + tovarZaOstatok + " на cумму " + kolichestvoZolota1 + " золотых");
+                        torgovec.setMoney (torgovec.getMoney ( ) - kolichestvoZolota1);
+                        meat1.setWeight (tovarZaOstatok + meat1.getWeight ( ));
+                        System.out.println ("Золота осталось " + torgovec.getMoney ( ) + " золотых. Количество мяса стало " + meat1.getWeight ( ) + " килограмм");
+                    } else {
+                        System.out.println ("Мяса куплено " + kolichestvoBay + " на cумму " + kolichestvoZolota + " золотых");
+
+                        torgovec.setMoney (torgovec.getMoney ( ) - kolichestvoZolota);
+                        meat1.setWeight (kolichestvoBay + meat1.getWeight ( ));
+                        System.out.println ("Золота осталось " + torgovec.getMoney ( ) + " золотых. Количество мяса стало " + meat1.getWeight ( ) + " килограмм");
+                    }
+
+                }
+
+
+            }
+                }
+
+            if (sellBay == 2) {
+                System.out.println ("Поступило выгодное предложение. Торговец решил продать часть товара");
+
+                int kilogram = changeTovar ();
+
+
+                if (kilogram == 0) {
+                    System.out.println ("Продаем зерно.");
+                    double summaViruchki = corn1.getPrice ( ) * corn1.getWeight ( )*corn1.getCoef ();
+                    System.out.println ("Зерна продано " + corn1.getWeight ( ) + " на cумму " + summaViruchki + " золотых");
+                    torgovec.setMoney (torgovec.getMoney ( ) + summaViruchki);
+                    corn1.setWeight (0);
+                } else if (kilogram == 1) {
+                    System.out.println ("Продаем сухофрукты.");
+                    double summaViruchki = driedFructs1.getPrice ( ) * driedFructs1.getWeight ( )*driedFructs1.getCoef ();
+                    System.out.println ("Сухофруктов продано " + corn1.getWeight ( ) + " на cумму " + summaViruchki + " золотых");
+                    torgovec.setMoney (torgovec.getMoney ( ) + summaViruchki);
+                    driedFructs1.setWeight (0);
+                } else if (kilogram == 2) {
+                    System.out.println ("Продаем муку.");
+                    Double summaViruchki = fabricks1.getPrice ( ) * fabricks1.getWeight ( ) * fabricks1.getCoef ();
+                    System.out.println ("Муки продано " + fabricks1.getWeight ( ) + " на cумму " + summaViruchki + " золотых");
+                    torgovec.setMoney (torgovec.getMoney ( ) + summaViruchki);
+                    fabricks1.setWeight (0);
+                } else if (kilogram == 3) {
+                    System.out.println ("Продаем краску.");
+                    double summaViruchki = flour1.getPrice ( ) * flour1.getWeight ( )*flour1.getCoef ();
+                    System.out.println ("Краски продано " + flour1.getWeight ( ) + " на cумму " + summaViruchki + " золотых");
+                    torgovec.setMoney (torgovec.getMoney ( ) + summaViruchki);
+                    flour1.setWeight (0);
+                } else {
+                    System.out.println ("Продаем мясо.");
+                    double summaViruchki = meat1.getPrice ( ) * meat1.getWeight ( )*meat1.getCoef ();
+                    System.out.println ("Мяса продано " + meat1.getWeight ( ) + " на cумму " + summaViruchki + " золотых");
+                    torgovec.setMoney (torgovec.getMoney ( ) + summaViruchki);
+                    meat1.setWeight (0);
+                }
+                System.out.println ("Оставшееся количество золота " + torgovec.getMoney ( ));
+            }
+
+        } else if (state.getStateChange ( ) == 8) {
+            System.out.println ("Испортился один из товаров");
+            int kilogram = changeTovar ();
+
+            if (kilogram == 0) {
+                Double indexU = Double.valueOf (indexOf (corn1.getCoef ( ), coef1) + 1);
+                corn1.setCoef (indexU);
+                System.out.println ("Зерно намокло");
+
+            } else if (kilogram  == 1) {
+                Double indexU = Double.valueOf (indexOf (driedFructs1.getCoef ( ), coef1) + 1);
+                driedFructs1.setCoef (indexU);
+                System.out.println ("Сухофрукты намокли");
+            } else if (kilogram  == 2) {
+                Double indexU = Double.valueOf (indexOf (fabricks1.getCoef ( ), coef1) + 1);
+                fabricks1.setCoef (indexU);
+                System.out.println ("Ткани намокли");
+            } else if (kilogram  == 3) {
+                Double indexU = Double.valueOf (indexOf (flour1.getCoef ( ), coef1) + 1);
+                flour1.setCoef (indexU);
+                System.out.println ("Краска намокла");
+            } else {
+                Double indexU = Double.valueOf (indexOf (meat1.getCoef ( ), coef1) + 1);
+                meat1.setCoef (indexU);
+                System.out.println ("Мясо намокло");
+            }
+        }
 
 
     }
-public void bayTovar(Tovar tovar){
+    private static  int changeTovar(){
+        Random random = new Random (  );
+        String[] stella = {"Corn", "DriedFructs", "Fabricks", "Flour", "Meat"};
+        int kilogram = random.nextInt (stella.length);
+        return kilogram;
+
+    }
+    private static int indexOf (Double c, Double[]arr){
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == c) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
 }
 
-}
+
+
+
+
+
+
+
+
+

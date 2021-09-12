@@ -1,30 +1,46 @@
 public class Tovar {
 
-    private int weight;
 
+    private Double weight;
     private int amount;
-    private double coefficient;
-    private double price;
+    Double[] coef1 = {1.2, 1.0, 0.95, 0.55, 0.25, 0.1};
 
-    public Tovar(int weight, int amount, double coefficient, double price) {
+
+    private Double coef;
+    private int price;
+
+    public Tovar(Double coef) {
+        this.coef = coef;
+    }
+
+    public Double getCoef() {
+        return coef;
+    }
+
+    public void setCoef(Double coef) {
+
+        this.coef = coef;
+
+
+    }
+
+
+
+    public Tovar() {
         this.weight = weight;
-                this.amount = amount;
-        this.coefficient = coefficient;
+        this.amount = amount;
+
         this.price = price;
     }
 
 
-
-    public int getWeight() {
+    public double getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
-
-
-
 
 
     public int getAmount() {
@@ -35,19 +51,17 @@ public class Tovar {
         this.amount = amount;
     }
 
-    public double getCoefficient() {
-        return coefficient;
-    }
+    public int getPrice() {
 
-    public void setCoefficient(double coefficient) {
-        this.coefficient = coefficient;
-    }
-
-    public double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice() {
+        price = ((int) (100 + Math.random ( ) * 200));
         this.price = price;
+
+
     }
+
+
 }
