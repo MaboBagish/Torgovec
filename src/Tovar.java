@@ -1,35 +1,25 @@
 public class Tovar {
 
 
+
     private Double weight;
     private int amount;
-    Double[] coef1 = {1.2, 1.0, 0.95, 0.55, 0.25, 0.1};
-
-
-    private Double coef;
+    private double coef;
     private int price;
 
-    public Tovar(Double coef) {
-        this.coef = coef;
-    }
 
-    public Double getCoef() {
+    public double getCoef() {
         return coef;
     }
 
     public void setCoef(Double coef) {
-
         this.coef = coef;
-
-
     }
-
-
 
     public Tovar() {
         this.weight = weight;
         this.amount = amount;
-
+        this.coef = coef;
         this.price = price;
     }
 

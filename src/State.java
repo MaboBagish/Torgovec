@@ -6,9 +6,11 @@ Random r = new Random (  );
 String[] state = {"typicalDay", "rain", "smoothRoad", "brockenWheel",
         "river", "metLocal", "bandits", "tractir", "productBad"};
 
-//private int stateChange = r.nextInt ( state.length );
-    private int stateChange = 7;
+    private int stateChange;
 
+    public void setStateChange(int stateChange) {
+        this.stateChange = stateChange;
+    }
 
     public int getStateChange() {
         return stateChange;

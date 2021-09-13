@@ -1,7 +1,7 @@
 public class Torgovec {
 
 
-    private  int gruzCarrying;
+    private  double gruzCarrying;
 
         private int speed;
     private Double money;
@@ -13,11 +13,11 @@ public class Torgovec {
     }
 
 
-    public  int getGruzCarrying() {
+    public  double getGruzCarrying() {
         return gruzCarrying;
     }
 
-    public void setGruzCarrying(int gruzCarrying) {
+    public void setGruzCarrying(double gruzCarrying) {
         this.gruzCarrying = gruzCarrying;
     }
 
