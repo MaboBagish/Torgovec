@@ -44,6 +44,7 @@ public class Main {
 
         torgovec.setMoney ((double) (5000 + Math.random ( ) * 500000));
         System.out.println ("\nКоличество денег  " + torgovec.getMoney ( ) + "  золотых монет.");
+        final double nachalnayaSumma = torgovec.getMoney ();
 
         int corn = 0, driedFructs = 0, fabricks = 0, flour = 0, meat = 0, textile = 0;
         double cornCena = 0, driedFructsCena = 0, fabricksCena = 0, flourCena = 0, meatCena = 0, textileCena = 0, summa = 0, ves = 0;
@@ -122,12 +123,25 @@ public class Main {
 
                 System.out.println ("\nСписок наших товаров \nМясо " + meat1.getWeight ( ) + " килограммов\nСухофруктов " + driedFructs1.getWeight ( ) + " килограмов \nМуки " + fabricks1.getWeight ( ) + "" +
                         " килограмов \nТканей " + textile1.getWeight ( ) + " килограмов \nКраски " + flour1.getWeight ( ) + " килограмов \nЗерна " + corn1.getWeight ( ) + " килограмов");
+
+                double viruchka = (meat1.getWeight ()*meat1.getPrice ()*meat1.getCoef ())+(driedFructs1.getWeight ()*driedFructs1.getPrice ()*driedFructs1.getCoef ())+(fabricks1.getWeight ()*fabricks1.getPrice ()*fabricks1.getCoef ())
+                        +(textile1.getWeight ()*textile1.getPrice ()*textile1.getCoef ())+(flour1.getWeight ()*flour1.getPrice ()*flour1.getCoef ())+(corn1.getWeight ()*corn1.getPrice ()*corn1.getCoef ());
+
+                System.out.println ("Общая сумма выручки составляет "+viruchka+" золотых" );
+
+                double dohod = viruchka-summa;
+                if (dohod>0){
+                    System.out.println ("Торговец получил прибыль "+dohod+" золотых. Общее количество золота "+torgovec.getMoney () );
+                }else {
+                    System.out.println ("Торговец ушел в минус "+dohod+" золотых. Общее количество золота "+torgovec.getMoney () );
+                }
+
                 break;
             }
             String[] stateDay = {"typicalDay", "rain", "smoothRoad", "brockenWheel",
                     "river", "metLocal", "bandits", "tractir", "productBad"};
-//            state.setStateChange (random.nextInt (stateDay.length));
-            state.setStateChange (6);
+            state.setStateChange (random.nextInt (stateDay.length));
+//            state.setStateChange (6);
 
 
             if (state.getStateChange ( ) == 0) {
@@ -266,145 +280,56 @@ public class Main {
                     if (torgovec.getMoney ( ) <= 0) {
                         System.out.println ("Разбойники потребовали денег, но денег оказалось недостаточно и они решили забрать товар");
                         System.out.println ("Разбойники забирают лучший товар");
-                        if (corn1.getPrice ( ) > driedFructs1.getPrice ( ) && corn1.getWeight ( ) != 0) {
-                            if (corn1.getPrice ( ) > fabricks1.getPrice ( )) {
-                                if (corn1.getPrice ( ) > flour1.getPrice ( )) {
-                                    if (corn1.getPrice ( ) > meat1.getPrice ( )) {
-                                        if (corn1.getPrice ( ) > textile1.getPrice ( )) {
 
-                                            System.out.println ("Разбойники забрали все зерно");
-                                            corn1.setWeight (0.0);
-                                            System.out.println (corn1.getWeight ( ));
-                                        }
-                                    }else {}
-                                }else {}
-                            }else {}
-                        } else if (driedFructs1.getPrice ( ) > fabricks1.getPrice ( ) & driedFructs1.getWeight () != 0 ) {
-                            if (driedFructs1.getPrice ( ) > flour1.getPrice ( )) {
-                                if (driedFructs1.getPrice ( ) > meat1.getPrice ( )) {
-                                    if (driedFructs1.getPrice ( ) > textile1.getPrice ( )) {
-                                        System.out.println ("Разбойники забрали все сухофрукты");
-                                        driedFructs1.setWeight (0.0);
-                                        System.out.println (driedFructs1.getWeight ( ));
-                                    }
-                                }
-                            }else {System.out.println ("Разбойники забрали все мясо");
-                                meat1.setWeight (0.0);}
-                        } else if (fabricks1.getPrice ( ) > flour1.getPrice ( ) & fabricks1.getWeight ()!=0) {
-                            if (fabricks1.getPrice ( ) > meat1.getPrice ( )) {
-                                if (fabricks1.getPrice ( ) > textile1.getPrice ( )) {
-                                    System.out.println ("Разбойники забрали всю ткань");
-                                    fabricks1.setWeight (0.0);
-                                }
-                            }else {continue;}
-                        } else if (flour1.getPrice ( ) > meat1.getPrice ( )& flour1.getWeight () !=0) {
-                            if (flour1.getPrice ( ) > textile1.getPrice ( )) {
-                                System.out.println ("Разбойники забрали всю краску");
-                                flour1.setWeight (0.0);
-                            }
-
-                        } else if (meat1.getPrice ( ) > textile1.getPrice ( )& meat1.getWeight ()!=0) {
-                            System.out.println ("Разбойники забрали все мясо");
-                            meat1.setWeight (0.0);
-                        } else if (textile1.getWeight ()!=0){
+                        if (textile1.getWeight ( ) != 0 ) {
                             System.out.println ("Разбойники забрали всю ткань");
-                            textile1.setWeight (0.0);}
-                        else {
-                        if(corn1.getWeight ()!=0){
-                            System.out.println ("Разбойники забирают последнее зерно" );
+                            textile1.setWeight (0.0);
+                        } else if (corn1.getWeight ( ) != 0) {
+                            System.out.println ("Разбойники забирают последнее зерно");
                             corn1.setWeight (0.0);
-                        }else if (meat1.getWeight ()!=0){
-                            System.out.println ("Разбойники забирают последнее мясо" );
-                            corn1.setWeight (0.0);
-                        }else if(flour1.getWeight ()!=0){
-                            System.out.println ("Разбойники забирают последнюю краску" );
+                        } else if (meat1.getWeight ( ) != 0) {
+                            System.out.println ("Разбойники забирают последнее мясо");
+                            meat1.setWeight (0.0);
+                            System.out.println (corn1.getWeight ( ));
+                        } else if (flour1.getWeight ( ) != 0) {
+                            System.out.println ("Разбойники забирают последнюю краску");
                             flour1.setWeight (0.0);
-                        }else if(fabricks1.getWeight ()!=0){
-                            System.out.println ("Разбойники забирают последнюю муку" );
+                        } else if (fabricks1.getWeight ( ) != 0) {
+                            System.out.println ("Разбойники забирают последнюю муку");
                             fabricks1.setWeight (0.0);
-                        }else if(driedFructs1.getWeight ()!=0){
-                            System.out.println ("Разбойники забирают все сухофрукты" );
+                        } else if (driedFructs1.getWeight ( ) != 0) {
+                            System.out.println ("Разбойники забирают все сухофрукты");
                             driedFructs1.setWeight (0.0);
                         }
-                        else {
 
-                            System.out.println ("Больше нечего забирать и разбойники забирают телегу" );
-                        }
-
-                        }
                     } else {
                         System.out.println ("Разбойник забирает все оставшиеся деньги");
                         torgovec.setMoney (0.0);
                     }
                 } else {
-                    System.out.println ("Разбойники забирают лучший товар");
-                    if (corn1.getPrice ( ) > driedFructs1.getPrice ( ) && corn1.getWeight ( ) != 0) {
-                        if (corn1.getPrice ( ) > fabricks1.getPrice ( )) {
-                            if (corn1.getPrice ( ) > flour1.getPrice ( )) {
-                                if (corn1.getPrice ( ) > meat1.getPrice ( )) {
-                                    if (corn1.getPrice ( ) > textile1.getPrice ( )) {
-
-                                        System.out.println ("Разбойники забрали все зерно");
-                                        corn1.setWeight (0.0);
-                                        System.out.println (corn1.getWeight ( ));
-                                    }
-                                }
-                            }
-                        }
-                    } else if (driedFructs1.getPrice ( ) > fabricks1.getPrice ( ) & driedFructs1.getWeight ( ) != 0) {
-                        if (driedFructs1.getPrice ( ) > flour1.getPrice ( )) {
-                            if (driedFructs1.getPrice ( ) > meat1.getPrice ( )) {
-                                if (driedFructs1.getPrice ( ) > textile1.getPrice ( )) {
-                                    System.out.println ("Разбойники забрали все сухофрукты");
-                                    driedFructs1.setWeight (0.0);
-                                    System.out.println (driedFructs1.getWeight ( ));
-                                }
-                            }
-                        }
-                    } else if (fabricks1.getPrice ( ) > flour1.getPrice ( ) & fabricks1.getWeight ( ) != 0) {
-                        if (fabricks1.getPrice ( ) > meat1.getPrice ( )) {
-                            if (fabricks1.getPrice ( ) > textile1.getPrice ( )) {
-                                System.out.println ("Разбойники забрали всю ткань");
-                                fabricks1.setWeight (0.0);
-                            }
-                        }
-                    } else if (flour1.getPrice ( ) > meat1.getPrice ( ) & flour1.getWeight ( ) != 0) {
-                        if (flour1.getPrice ( ) > textile1.getPrice ( )) {
-                            System.out.println ("Разбойники забрали всю краску");
-                            flour1.setWeight (0.0);
-                        }
-
-                    } else if (meat1.getPrice ( ) > textile1.getPrice ( ) & meat1.getWeight ( ) != 0) {
-                        System.out.println ("Разбойники забрали все мясо");
+                    if (textile1.getWeight ( ) != 0 ) {
+                        System.out.println ("Разбойники забрали всю ткань");
+                        textile1.setWeight (0.0);
+                    } else if (corn1.getWeight ( ) != 0) {
+                        System.out.println ("Разбойники забирают последнее зерно");
+                        corn1.setWeight (0.0);
+                    } else if (meat1.getWeight ( ) != 0) {
+                        System.out.println ("Разбойники забирают последнее мясо");
                         meat1.setWeight (0.0);
-                    } else if (textile1.getWeight ( ) != 0){
-
-                            System.out.println ("Разбойники забрали всю ткань");
-                            textile1.setWeight (0.0);}
-                       else{
-                            if (textile1.getWeight ( ) != 0) {
-                                System.out.println ("Разбойники забрали всю ткань");
-                                textile1.setWeight (0.0);
-                            } else if (corn1.getWeight ( ) != 0) {
-                                System.out.println ("Разбойники забирают последнее зерно");
-                                corn1.setWeight (0.0);
-                            } else if (meat1.getWeight ( ) != 0) {
-                                System.out.println ("Разбойники забирают последнее мясо");
-                                corn1.setWeight (0.0);
-                            } else if (flour1.getWeight ( ) != 0) {
-                                System.out.println ("Разбойники забирают последнюю краску");
-                                flour1.setWeight (0.0);
-                            } else if (fabricks1.getWeight ( ) != 0) {
-                                System.out.println ("Разбойники забирают последнюю муку");
-                                fabricks1.setWeight (0.0);
-                            } else if (driedFructs1.getWeight ( ) != 0) {
-                                System.out.println ("Разбойники забирают все сухофрукты");
-                                driedFructs1.setWeight (0.0);
-                            }
-                        }
-
+                        System.out.println (corn1.getWeight ( ));
+                    } else if (flour1.getWeight ( ) != 0) {
+                        System.out.println ("Разбойники забирают последнюю краску");
+                        flour1.setWeight (0.0);
+                    } else if (fabricks1.getWeight ( ) != 0) {
+                        System.out.println ("Разбойники забирают последнюю муку");
+                        fabricks1.setWeight (0.0);
+                    } else if (driedFructs1.getWeight ( ) != 0) {
+                        System.out.println ("Разбойники забирают все сухофрукты");
+                        driedFructs1.setWeight (0.0);
+                    }
                 }
-                } else if (state.getStateChange ( ) == 7) {
+
+            } else if (state.getStateChange ( ) == 7) {
                 System.out.println ("Довольно приличный трактир, где можно отдохнуть а может даже и совершить выгодную сделку");
                 System.out.println ("Ночлег здесь стоит 50 золотых включая, знатный ужин");
                 if (torgovec.getMoney ( ) < 50) {
